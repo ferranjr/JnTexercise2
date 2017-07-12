@@ -21,7 +21,9 @@ totally separated of the possible implementations about it.
 ## Trade Offs
 
 I focused on the DSL for the library, which means I left a lot of work pending for the
-interpreter. I used exceptions to handle errors on the interpreter as I used one for the
+interpreter. 
+
+I used exceptions to handle errors on the interpreter as I used one for the
 ```
 type Id[A] = A
 ```
@@ -31,6 +33,9 @@ Either[FreeImageException, A]
 ```
 or one of the many other options to handle errors ina  more type safe manner, or at least
 more functional.
+
+As spend some time playing and designing the DSL, I didn't applied proper TDD, and added some tests later
+when I had a clearer idea of the DSL.
 
 ## How to Run the tests
 

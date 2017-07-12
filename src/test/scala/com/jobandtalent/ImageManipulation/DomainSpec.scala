@@ -1,14 +1,10 @@
 package com.jobandtalent.ImageManipulation
 
-import java.awt.color.{ColorSpace, ICC_ColorSpace}
-import java.awt.image.{BufferedImage, ColorModel, DirectColorModel, WritableRaster}
+import java.awt.image.BufferedImage
 
 import org.mockito.Mockito._
-import org.mockito.stubbing.Answer
 import org.scalatest.mockito.MockitoSugar
 import org.scalatest.{FlatSpec, Matchers}
-
-import scala.collection.mutable
 
 class DomainSpec
   extends FlatSpec
