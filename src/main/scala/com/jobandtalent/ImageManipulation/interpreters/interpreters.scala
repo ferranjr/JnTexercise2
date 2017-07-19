@@ -3,10 +3,9 @@ package com.jobandtalent.ImageManipulation
 import java.awt.{AlphaComposite, Graphics2D}
 import java.awt.geom.AffineTransform
 import java.awt.image.BufferedImage
-import java.io.File
-import javax.imageio.ImageIO
 
 import cats.~>
+import com.jobandtalent.ImageManipulation.commons.FileUtils
 
 package object interpreters {
 
@@ -102,27 +101,6 @@ package object interpreters {
       }
     }
 
-    private[this] def loadImage(fullPath: String): FreeImage = {
-      try {
-        val input = new File(fullPath)
-        val bfi = ImageIO.read(input)
-        FreeImage(fullPath, bfi)
-      } catch {
-        case _: Throwable =>
-          throw FailedToLoadImage(fullPath)
-      }
-    }
-
-    private[this] def saveImage(destPath: String, image: FreeImage): Unit = {
-      try {
-        val output = new File(destPath)
-        ImageIO.write(image.bufferedImage, "jpg", output)
-      } catch {
-        case _: Throwable =>
-          throw FailedToSaveImage(destPath)
-      }
-    }
-
     /**
       * This is the main implementation of the interpreter, where we basically define
       * what to do for each one of the AST components defined on our little DSL.
@@ -132,10 +110,16 @@ package object interpreters {
       */
     def apply[A](fa: ImageOps[A]): A = fa match {
       case LoadImage(fullPath) =>
-        loadImage(fullPath)
+        FileUtils.loadImage(fullPath).fold(
+          error => throw error,
+          image => image
+        )
 
       case SaveImage(destPath, image) =>
-        saveImage(destPath, image)
+        FileUtils.saveImage(destPath, image).fold(
+          error => throw error,
+          result => result
+        )
 
       case Flip(img, direction) =>
         flipImage(img, direction)
