@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage
 import cats.~>
 import com.jobandtalent.ImageManipulation.commons.FileUtils
 
+import scala.util.control.NonFatal
+
 package object interpreters {
 
   type Id[A] = A
@@ -46,8 +48,8 @@ package object interpreters {
 
         image.copy(bufferedImage = applyTranformation(image.bufferedImage, transform))
       } catch {
-        case _: Throwable =>
-          throw FailedOperatingOverImage("flipImage")
+        case NonFatal(e) =>
+          throw FailedOperatingOverImage(s"flipImage: ${e.getMessage}")
       }
     }
 
@@ -64,8 +66,8 @@ package object interpreters {
 
         image.copy(bufferedImage = applyTranformation(image.bufferedImage, transform))
       } catch {
-        case _: Throwable =>
-          throw FailedOperatingOverImage("flipImage")
+        case NonFatal(e) =>
+          throw FailedOperatingOverImage(s"rotateImage: ${e.getMessage}")
       }
     }
 
@@ -74,8 +76,8 @@ package object interpreters {
         val bfi = image.bufferedImage
         image.copy(bufferedImage = bfi.getSubimage(x, y, w, h))
       } catch {
-        case _: Throwable =>
-          throw FailedOperatingOverImage("cropImage")
+        case NonFatal(e) =>
+          throw FailedOperatingOverImage(s"cropImage: ${e.getMessage}")
       }
     }
 
@@ -93,8 +95,8 @@ package object interpreters {
 
           imageA
         } catch {
-          case _: Throwable =>
-            throw FailedOperatingOverImage("blendImages")
+          case NonFatal(e) =>
+            throw FailedOperatingOverImage(s"blendImages: ${e.getMessage}")
         }
       } else {
         throw FailedToBlendImageDueToDifferentColorSpace(imageA, imageB)
